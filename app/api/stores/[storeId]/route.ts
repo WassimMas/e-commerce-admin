@@ -37,7 +37,7 @@ export async function PATCH(
   }
 }
 
-export async function Delete(
+export async function DELETE(
   req: Request,
   { params }: { params: { storeId: string } }
 ) {

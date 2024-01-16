@@ -1,7 +1,4 @@
-import Stripe from "stripe";
 import { NextResponse } from "next/server";
-
-import { stripe } from "@/lib/stripe";
 import prismadb from "@/lib/prismadb";
 
 const corsHeaders = {
@@ -24,6 +21,7 @@ export async function POST(
     return new NextResponse("Product ids are required", { status: 400 });
   }
 
+  // Your logic to fetch products from the database
   const products = await prismadb.product.findMany({
     where: {
       id: {
@@ -32,21 +30,7 @@ export async function POST(
     },
   });
 
-  const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
-
-  products.forEach((product) => {
-    line_items.push({
-      quantity: 1,
-      price_data: {
-        currency: "USD",
-        product_data: {
-          name: product.name,
-        },
-        unit_amount: product.price.toNumber() * 100,
-      },
-    });
-  });
-
+  // Your logic to create an order in the database
   const order = await prismadb.order.create({
     data: {
       storeId: params.storeId,
@@ -63,22 +47,9 @@ export async function POST(
     },
   });
 
-  const session = await stripe.checkout.sessions.create({
-    line_items,
-    mode: "payment",
-    billing_address_collection: "required",
-    phone_number_collection: {
-      enabled: true,
-    },
-    success_url: `${process.env.FRONTEND_STORE_URL}/cart?success=1`,
-    cancel_url: `${process.env.FRONTEND_STORE_URL}/cart?canceled=1`,
-    metadata: {
-      orderId: order.id,
-    },
-  });
-
+  // Modify the response according to your needs
   return NextResponse.json(
-    { url: session.url },
+    { message: "Order created successfully", orderId: order.id },
     {
       headers: corsHeaders,
     }

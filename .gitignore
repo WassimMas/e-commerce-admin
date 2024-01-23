@@ -37,3 +37,7 @@ yarn-error.log*
 next-env.d.ts
 
 .vercel
+
+flyway.user.toml
+report.html
+report.json

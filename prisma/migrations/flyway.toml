@@ -1,0 +1,16 @@
+databaseType = "MySql"
+name = "e-commerce-admin"
+id = "b9854c48-7695-482f-80b4-32864fe439ff"
+
+[flywayDesktop]
+developmentEnvironment = "development"
+shadowEnvironment = "shadow"
+schemaModel = "./schema-model"
+
+[flyway]
+
+[redgateCompare]
+filterFile = "filter.rgf"
+
+[redgateCompare.mysql.options.ignores]
+ignoreNewlinesInTextObjects = "off"
